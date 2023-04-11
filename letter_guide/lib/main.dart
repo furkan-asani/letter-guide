@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:letter_guide/pages/document_summary_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,18 +49,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,54 +58,70 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+    return LetterGuideScaffold(
+      title: 'LetterGuide',
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            MainMenuButton(icon: const Icon(Icons.camera_alt, color: Colors.white), buttonTitle: "Scan"),
-            MainMenuButton(icon: const Icon(Icons.history, color: Colors.white,), buttonTitle: "Historie",),
-            MainMenuButton(icon: const Icon(Icons.settings, color: Colors.white,), buttonTitle: "Einstellungen",)
-          ],
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(
+            // Column is also a layout widget. It takes a list of children and
+            // arranges them vertically. By default, it sizes itself to fit its
+            // children horizontally, and tries to be as tall as its parent.
+            //
+            // Invoke "debug painting" (press "p" in the console, choose the
+            // "Toggle Debug Paint" action from the Flutter Inspector in Android
+            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+            // to see the wireframe for each widget.
+            //
+            // Column has various properties to control how it sizes itself and
+            // how it positions its children. Here we use mainAxisAlignment to
+            // center the children vertically; the main axis here is the vertical
+            // axis because Columns are vertical (the cross axis would be
+            // horizontal).
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const <Widget>[
+              MainMenuButton(
+                  icon: Icon(Icons.camera_alt, color: Colors.white),
+                  buttonTitle: "Scan"),
+              MainMenuButton(
+                icon: Icon(
+                  Icons.history,
+                  color: Colors.white,
+                ),
+                buttonTitle: "Historie",
+              ),
+              MainMenuButton(
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                buttonTitle: "Einstellungen",
+              )
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
 
-class MainMenuButton extends StatelessWidget {
-  Icon icon;
-  String buttonTitle;
+class LetterGuideScaffold extends StatelessWidget{
+  final Widget body;
+  final String title;
 
-  MainMenuButton(
-     {super.key, required this.icon, required this.buttonTitle}
-  );
+  const LetterGuideScaffold({super.key, required this.body, required this.title});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(appBar: AppBar(title: Text(title),),body: body);
+  }
+}
+
+class MainMenuButton extends StatelessWidget {
+  final Icon icon;
+  final String buttonTitle;
+
+  const MainMenuButton({super.key, required this.icon, required this.buttonTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +131,9 @@ class MainMenuButton extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 8.0),
           child: ElevatedButton(
             onPressed: () {
-              // Do something when button is pressed
-            },
+             Navigator.push(context, MaterialPageRoute(builder: (context) => const LetterGuideScaffold(body: DocumentSummaryPage(), title: 'Document Summary'))); // Do something when button is pressed
+
+          },
             style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -142,7 +148,10 @@ class MainMenuButton extends StatelessWidget {
             ),
           ),
         ),
-        Text(buttonTitle, style: const TextStyle(color: Colors.blueGrey, fontSize: 14),)
+        Text(
+          buttonTitle,
+          style: const TextStyle(color: Colors.blueGrey, fontSize: 14),
+        )
       ],
     );
   }
